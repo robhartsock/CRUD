@@ -1,5 +1,5 @@
 # Logikcull
-###### This CRUD app uses JsStore (http://jsstore.net/) as an IndexedDB wrapper for client side storage.
+This CRUD app uses JsStore (http://jsstore.net/) as an IndexedDB wrapper for client side storage.
 
 ## Installation
 ```
