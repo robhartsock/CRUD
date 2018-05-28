@@ -102,33 +102,6 @@
       return dataBase;
     }
 
-    // sort & refresh data
-    function sort() {
-      // add class toggle for asc & desc
-      connection.select({
-        from: 'Record',
-        order: {
-          by: 'Name',
-          type: 'desc'
-        }
-      }).then(function (records) {
-        var HtmlString = '';
-        records.forEach(function (record) {
-          HtmlString += "<div ItemId=" + record.Id + ">" +
-            "<div class='coreMod'><a href='artist.html?artist=" + encodeURIComponent(record.Artist) + "'>" + record.Artist + "</a></div>" +
-            "<div class='coreMod'>" + record.Album + "</div>" +
-            "<div class='coreMod'>" + record.Year + "</div>" +
-            "<div class='coreMod'>" + record.Condition + "</div>" +
-            "<div class='coreMod'>" + record.Tags + "</div></div>";
-            //"<a href='#' class='edit'>Edit</a></td>" +
-            //"<td><a href='#' class='delete''>Delete</a></td>";
-        })
-        $('#dashCore').html(HtmlString);
-      }).catch(function(err) {
-          console.log(err.message);
-      });
-    }
-
     // show & refresh data
     function showData() {
       connection.select({
