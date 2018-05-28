@@ -1,0 +1,205 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Record Collection</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="style/main.css" />
+  <script src="scripts/jsstore.js "></script>
+  <script>
+    var connection = new JsStore.Instance(new Worker('scripts/jsstore.worker.js'));
+    window.onload = function() {
+      initiateDb();
+      $('#btnAddRecord').click(function() {
+        window.location.href = 'add.html';
+      })
+      $('#container').on('click', '.edit', function() {
+        var RecordId = $(this).parents().eq(1).attr('itemid');
+        window.location.href = 'add.html?id=' + RecordId;
+      });
+      $('#container').on('click', '.delete', function() {
+        var RecordId = $(this).parents().eq(1).attr('itemid');
+        deleteData(RecordId);
+      });
+    };
+
+    // delete record
+    function deleteData(recordId) {
+      connection.remove({
+        from: 'Record',
+        where: {
+          Id: Number(recordId)
+        }
+      }).then(function (rowsDeleted) {
+        console.log(rowsDeleted + ' rows deleted');
+        if (rowsDeleted > 0) {
+          showData();
+        }
+      }).catch(function (err) {
+        console.log(err.message);
+      });
+    }
+
+    // fire up the data
+    function initiateDb() {
+      var DbName = 'Records';
+      connection.isDbExist(DbName).then(function (isExist) {
+        if (isExist) {
+          connection.openDb(DbName).then(function() {
+            console.log('db opened');
+          });
+          showData();
+        } else {
+          var DataBase = getDatabase();
+          connection.createDb(DataBase).then(function (tables) {
+            console.log(tables);
+          });
+          window.location.href = 'index.html';
+        }
+      }).catch(function (err) {
+        console.log(err.message);
+      });
+    }
+    function getDatabase() {
+      var tblRecord = {
+        name: 'Record',
+        columns: [{
+          name: 'Id',
+          primaryKey: true,
+          autoIncrement: true
+        },
+        {
+          name: 'Artist',
+          notNull: true,
+          dataType: 'string'
+        },
+        {
+          name: 'Album',
+          notNull: true,
+          dataType: 'string'
+        },
+        {
+          name: 'Year',
+          notNull: true,
+          dataType: 'string'
+        },
+        {
+          name: 'Condition',
+          notNull: true,
+          dataType: 'string'
+        },
+        {
+          name: 'Tags',
+          notNull: true,
+          dataType: 'string'
+        }
+      ]}
+      var dataBase = {
+        name: 'Records',
+        tables: [tblRecord]
+      }
+      return dataBase;
+    }
+
+    // sort & refresh data
+    function sort() {
+      // add class toggle for asc & desc
+      connection.select({
+        from: 'Record',
+        order: {
+          by: 'Name',
+          type: 'desc'
+        }
+      }).then(function (records) {
+        var HtmlString = '';
+        records.forEach(function (record) {
+          HtmlString += "<div ItemId=" + record.Id + ">" +
+            "<div class='coreMod'><a href='artist.html?artist=" + encodeURIComponent(record.Artist) + "'>" + record.Artist + "</a></div>" +
+            "<div class='coreMod'>" + record.Album + "</div>" +
+            "<div class='coreMod'>" + record.Year + "</div>" +
+            "<div class='coreMod'>" + record.Condition + "</div>" +
+            "<div class='coreMod'>" + record.Tags + "</div></div>";
+            //"<a href='#' class='edit'>Edit</a></td>" +
+            //"<td><a href='#' class='delete''>Delete</a></td>";
+        })
+        $('#dashCore').html(HtmlString);
+      }).catch(function(err) {
+          console.log(err.message);
+      });
+    }
+
+    // show & refresh data
+    function showData() {
+      connection.select({
+        from: 'Record'
+      }).then(function (records) {
+        if (records.length === 0) {
+          $('#noRecords').show();
+        } else {
+          $('#noRecords').hide();
+        }
+        var HtmlString = '';
+        records.forEach(function (record) {
+          HtmlString += "<div ItemId=" + record.Id + ">" +
+            "<div class='coreMod'><a href='artist.html?artist=" + encodeURIComponent(record.Artist) + "'>" + record.Artist + "</a></div>" +
+            "<div class='coreMod'>" + record.Album + "</div>" +
+            "<div class='coreMod'>" + record.Year + "</div>" +
+            "<div class='coreMod'>" + record.Condition + "</div>" +
+            "<div class='coreMod'>" + record.Tags + "</div>" +
+            "<div class='coreMod'><a href='#' class='edit'>Edit</a></div>" +
+            "<div class='coreMod'><a href='#' class='delete'>Delete</a></div></div>";
+        })
+        $('#dashCore').html(HtmlString);
+      }).catch(function(err) {
+        console.log(err.message);
+      });
+    }
+
+    // search records
+    function Find() {
+      var searchQry = $('#search').val();
+      window.location.href = 'search.html?query=' + searchQry;
+    }
+
+    function getRecords() {
+      var Records = [];
+      return Records;
+    }
+  </script>
+</head>
+<body>
+<header>
+  Record Collection
+  <a href="index.html">Home</a>
+</header>
+<div class="strip">
+  <div class="search">
+    <div class="searchRow">
+      <div class="input-6">
+        <input type="text" class="" id="search" placeholder="Search" />
+      </div>
+      <button id="btnFind" onclick="Find();">
+        Find
+      </button>
+    </div>
+  </div>
+</div>
+<div id="container">
+  <button id="btnAddRecord">
+    Add Record
+  </button>
+  <div id="dashHead">
+    <div class="headMod">Artist</div>
+    <div class="headMod">Album</div>
+    <div class="headMod">Year</div>
+    <div class="headMod">Condition</div>
+    <div class="headMod">Tags</div>
+    <div class="headMod"></div>
+    <div class="headMod"></div>
+  </div>
+  <div id="noRecords">You have no records.</div>
+  <div id="dashCore"></div>
+</div>
+</body>
+</html>

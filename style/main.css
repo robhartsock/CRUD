@@ -1,0 +1,273 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', Arial, sans serif;
+  font-style: normal;
+  overflow-x: hidden;
+  background: #fff;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none;
+}
+
+header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 30px 0 30px 60px;
+  width: 100%;
+  font-size: 30px;
+  background: #fff;
+}
+
+  header a {
+    position: absolute;
+    padding-bottom: 2px;
+    top: 40px;
+    right: 70px;
+    font-size: 14px;
+    color: #06406d;
+    text-decoration: none;
+    border-bottom: 1px solid #06406d;
+  }
+
+button {
+  font-size: 14px;
+  color: #fff;
+  background: #06406d;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.strip {
+  display: block;
+  position: relative;
+  margin-top: 95px;
+  width: 100%;
+  height: 100px;
+  background: #06406d;
+}
+
+  .search {
+    position: relative;
+    margin: 0 auto;
+    top: 50px;
+    width: 1200px;
+    background: #e0e0e0;
+    border-radius: 5px;
+    box-shadow: 0 0px 3px #555;
+  }
+
+    .searchRow {
+      display: block;
+      padding: 20px;
+    }
+    .searchRow input {
+      display: inline-block;
+      width: 100%;
+      padding: 15px;
+      font-size: 26px;
+      border-radius: 5px;
+      border: none;
+      color: #777;
+    }
+    .searchRow button {
+      display: inline-block;
+      width: 100px;
+      padding: 15px;
+      font-size: 26px;
+      border-radius: 5px;
+      border: none;
+      color: #fff;
+      background: #0964aa;
+    }
+    .input-6 {
+      display: inline-block;
+      margin-right: 10px;
+      width: 1045px;
+    }
+
+/* Dashboard */
+#container {
+  position: relative;
+  margin: 100px auto 20px auto;
+  padding: 20px 50px 50px;
+  width: 1200px;
+  min-height: 300px;
+  background: #fff;
+}
+
+  #container button {
+    position: absolute;
+    top: 15px;
+    right: 50px;
+    width: 100px;
+    height: 40px;
+  }
+
+  #dashHead {
+    position: relative;
+    display: block;
+    padding: 10px 0 20px 0;
+    width: 100%;
+    border-bottom: 1px solid #ddd;
+    color: #333;
+  }
+
+    .headMod {
+      position: relative;
+      display: table-cell;
+      width: calc(1200px / 5);
+      text-align: left;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+  #dashCore {
+    position: relative;
+    display: block;
+    padding: 0;
+    width: 100%;
+  }
+
+    #noRecords {
+      position: relative;
+      display: none;
+      padding: 50px 0 50px 0;
+      width: 100%;
+      font-size: 20px;
+      text-align: center;
+    }
+
+    .coreMod {
+      position: relative;
+      display: table-cell;
+      padding: 30px 15px 30px 0;
+      text-align: left;
+      font-size: 13px;
+      color: #555;
+      line-height: 1.3;
+      border-bottom: 1px solid #ddd;
+    }
+
+      .coreMod a {
+        padding-bottom: 2px;
+        color: #3a4d6a;
+        text-decoration: none;
+        border-bottom: 1px solid #06406d;
+      }
+
+      .headMod:nth-child(1), .coreMod:nth-child(1) {
+        width: 290px;
+      }
+      .headMod:nth-child(2), .coreMod:nth-child(2) {
+        width: 280px;
+      }
+      .headMod:nth-child(3), .coreMod:nth-child(3) {
+        width: 110px;
+      }
+      .headMod:nth-child(4), .coreMod:nth-child(4) {
+        width: 120px;
+      }
+      .headMod:nth-child(5), .coreMod:nth-child(5) {
+        width: 210px;
+      }
+      .headMod:nth-child(6), .coreMod:nth-child(6) {
+        width: 50px;
+      }
+      .headMod:nth-child(7), .coreMod:nth-child(7) {
+        width: 50px;
+      }
+
+#formContainer {
+  position: relative;
+  margin: 100px auto 20px auto;
+  padding: 0;
+  width: 800px;
+  min-height: 300px;
+  background: #fff;
+  border: 1px solid #ccc;
+}
+
+  .formRow {
+    display: block;
+    border-bottom: 1px solid #ccc;
+  }
+
+    .formRow:last-child {
+      padding-top: 20px;
+      border: none;
+    }
+
+  .formMod {
+    display: inline-block;
+    height: 110px;
+  }
+
+    .formMod label {
+      display: block;
+      padding: 10px 0 0 10px;
+      width: 100%;
+      font-size: 16px;
+      color: #888;
+      border: none;
+    }
+
+    .formMod input {
+      display: inline-block;
+      padding: 30px 20px 30px 20px;
+      width: 100%;
+      font-size: 18px;
+      border: none;
+    }
+
+    .input-1 {
+      width: 400px;
+      border-right: 1px solid #ccc;
+    }
+    .input-2 {
+      width: 397px;
+      margin-left: -3px;
+    }
+    .input-3 {
+      width: 300px;
+      border-right: 1px solid #ccc;
+    }
+    .input-4 {
+      width: 497px;
+      margin-left: -3px;
+    }
+    .input-5 {
+      width: 100%;
+    }
+
+    #btnContainer {
+      position: relative;
+      margin: 0 auto 20px auto;
+      padding: 0;
+      width: 800px;
+    }
+
+      #btnContainer button {
+        display: inline-block;
+        margin-right: 10px;
+        width: 100px;
+        height: 40px;
+      }
+
+  #artistChart {
+    margin: 80px auto 0 auto;
+    width: 600px;
+  }

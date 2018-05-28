@@ -1,0 +1,182 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Record Collection</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="style/main.css" />
+  <script src="scripts/jsstore.js "></script>
+  <script>
+    var connection = new JsStore.Instance(new Worker('scripts/jsstore.worker.js')),
+        RecordId;
+    window.onload = function() {
+      initiateDb();
+      getRecord();
+    };
+
+    function initiateDb() {
+      var DbName = 'Records';
+      connection.isDbExist(DbName).then(function (isExist) {
+        if (isExist) {
+          connection.openDb(DbName);
+        } else {
+          window.location.href = 'index.html';
+        }
+      }).catch(function (err) {
+        console.log(err.message);
+      });
+    }
+
+    function getParam(name, url) {
+      if (!url) url = window.location.href;
+      name = name.replace(/[\[\]]/g, '\\$&');
+      var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+          results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
+
+    function getRecord() {
+      RecordId = getParam('id');
+      if (RecordId) {
+        connection.select({
+          from: 'Record',
+          where: {
+            Id: Number(RecordId)
+          }
+        }).then(function (results) {
+          if (results.length > 0) {
+            var Record = results[0];
+            $('#txtArtist').val(Record.Artist);
+            $('#txtAlbum').val(Record.Album);
+            $('#txtYear').val(Record.Year);
+            $('#txtCondition').val(Record.Condition);
+            $('#txtTags').val(Record.Tags);
+          } else {
+            console.log('Invalid record id');
+          }
+        }).catch(function (err) {
+          console.log(err.message);
+        });
+      }
+    }
+
+    function Submit() {
+      if (RecordId) {
+        updateRecord();
+      } else {
+        addRecord();
+      }
+    }
+
+    function Return() {
+      window.location.href = 'index.html';
+    }
+
+    function updateRecord() {
+      var Value = {
+        Artist: $('#txtArtist').val(),
+        Album: $('#txtAlbum').val(),
+        Year: $('#txtYear').val(),
+        Condition: $('#txtCondition').val(),
+        Tags: $('#txtTags').val().replace(/,/g, ' ')
+      };
+      connection.update({ in: 'Record',
+        set: Value,
+        where: {
+          Id: Number(RecordId)
+        }
+      }).then(function (rowsAffected) {
+        console.log(rowsAffected + ' record Updated');
+        if (rowsAffected > 0) {
+          window.location.href = 'index.html';
+        }
+      }).catch(function (err) {
+        console.log(err.message);
+      });
+    }
+
+    function addRecord() {
+      var Value = {
+        Artist: $('#txtArtist').val(),
+        Album: $('#txtAlbum').val(),
+        Year: $('#txtYear').val(),
+        Condition: $('#txtCondition').val(),
+        Tags: $('#txtTags').val().replace(/,/g, ' ')
+      };
+      connection.insert({
+        into: 'Record',
+        values: [Value]
+      }).then(function (rowsAdded) {
+        console.log(rowsAdded + ' record Added');
+        window.location.href = 'index.html';
+      }).catch(function (err) {
+        console.log(err.message);
+      });
+    }
+
+    // search records
+    function Find() {
+      var searchQry = $('#search').val();
+      window.location.href = 'search.html?query=' + searchQry;
+    }
+  </script>
+</head>
+<body>
+<header>
+  Add / Update Record
+  <a href="index.html">Home</a>
+</header>
+<div class="strip">
+  <div class="search">
+    <div class="searchRow">
+      <div class="input-6">
+        <input type="text" class="" id="search" placeholder="Search" />
+      </div>
+      <button id="btnFind" onclick="Find();">
+        Find
+      </button>
+    </div>
+  </div>
+</div>
+<div id="formContainer">
+  <form class="" data-record-id="" role="form">
+    <div class="formRow">
+      <div class="formMod input-1">
+        <label class="" for="txtArtist">Artist</label>
+        <input type="text" class="" id="txtArtist" />
+      </div>
+      <div class="formMod input-2">
+        <label class="" for="txtAlbum">Album</label>
+        <input type="text" class="" id="txtAlbum" />
+      </div>
+    </div>
+    <div class="formRow">
+      <div class="formMod input-3">
+        <label class="" for="txtYear">Year</label>
+        <input type="text" class="" id="txtYear" />
+      </div>
+      <div class="formMod input-4">
+        <label class="" for="txtCondition">Condition</label>
+        <input type="text" class="" id="txtCondition" />
+      </div>
+    </div>
+    <div class="formRow">
+      <div class="formMod input-5">
+        <label class="" for="txtTags">Tags</label>
+        <input type="text" class="" id="txtTags" />
+      </div>
+    </div>
+  </form>
+</div>
+<div id="btnContainer">
+  <button id="btnSubmit" type="button" onclick="Submit();">
+    <span>Add</span>
+  </button>
+  <button id="btnCancel" type="button" onclick="Return();">
+    <span>Cancel</span>
+  </button>
+</div>
+</body>
+</html>
