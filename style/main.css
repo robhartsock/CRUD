@@ -20,6 +20,11 @@ button:focus {
   outline: none;
 }
 
+::placeholder {
+  color: #888;
+  opacity: .5;
+}
+
 header {
   position: absolute;
   top: 0;
