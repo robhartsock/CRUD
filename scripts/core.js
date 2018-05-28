@@ -1,9 +1,36 @@
+var d = document;
+var w = window;
 var connection = new JsStore.Instance(new Worker('scripts/jsstore.worker.js'));
 var RecordId;
 
 // init
 initiateDb();
-getRecord();
+
+// eventListers
+var btnAddRecord = d.getElementById('btnAddRecord');
+if (btnAddRecord) {
+  btnAddRecord.addEventListener('click', function() {
+    w.location.href = 'add.html';
+  });
+}
+var btnSort = d.getElementById('btnSort');
+if (btnSort) {
+  btnSort.addEventListener('click', function() {
+    sort();
+  });
+}
+var btnSubmit = d.getElementById('btnSubmit');
+if (btnSubmit) {
+  btnSubmit.addEventListener('click', function() {
+    submit();
+  });
+}
+var btnCancel = d.getElementById('btnCancel');
+if (btnCancel) {
+  btnCancel.addEventListener('click', function() {
+    cancel();
+  });
+}
 
 // fire up the data
 function initiateDb() {
@@ -83,8 +110,8 @@ function showData() {
         "<div class='coreMod'>" + record.Year + "</div>" +
         "<div class='coreMod'>" + record.Condition + "</div>" +
         "<div class='coreMod'>" + record.Tags + "</div>" +
-        "<div class='coreMod'><a href='#' class='edit'>Edit</a></div>" +
-        "<div class='coreMod'><a href='#' class='delete'>Delete</a></div></div>";
+        "<div class='coreMod'><a href='add.html?id=" + record.Id + "' class='edit'>Edit</a></div>" +
+        "<div class='coreMod'><a href='#' class='delete' onclick='deleteData(" + record.Id + ")'>Delete</a></div></div>";
     })
     $('#dashCore').html(HtmlString);
   }).catch(function(err) {
@@ -97,10 +124,6 @@ function Find() {
   var searchQry = $('#search').val();
   window.location.href = 'search.html?query=' + searchQry;
 }
-function getRecords() {
-  var Records = [];
-  return Records;
-}
 
 // get query params
 function getParam(name, url) {
@@ -111,31 +134,6 @@ function getParam(name, url) {
   if (!results) return null;
   if (!results[2]) return '';
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
-}
-
-function getRecord() {
-  RecordId = getParam('id');
-  if(RecordId) {
-    connection.select({
-      from: 'Record',
-      where: {
-        Id: Number(RecordId)
-      }
-    }).then(function (results) {
-      if (results.length > 0) {
-        var Record = results[0];
-        $('#txtArtist').val(Record.Artist);
-        $('#txtAlbum').val(Record.Album);
-        $('#txtYear').val(Record.Year);
-        $('#txtCondition').val(Record.Condition);
-        $('#txtTags').val(Record.Tags);
-      } else {
-        console.log('Invalid record id');
-      }
-    }).catch(function (err) {
-      console.log(err.message);
-    });
-  }
 }
 
 // add record
@@ -165,15 +163,15 @@ function deleteData(recordId) {
     where: {
       Id: Number(recordId)
     }
-  }).then(function (rowsDeleted) {
+  }).then(function(rowsDeleted) {
     console.log(rowsDeleted + ' rows deleted');
     if (rowsDeleted > 0) {
       showData();
       buildArtist();
-      buildResults();
+      if(location.pathname === '/.search.html') {
+        buildResults();
+      }
     }
-  }).catch(function (err) {
-    console.log(err.message);
   });
 }
 
@@ -236,8 +234,8 @@ function sort() {
         "<div class='coreMod'>" + record.Year + "</div>" +
         "<div class='coreMod'>" + record.Condition + "</div>" +
         "<div class='coreMod'>" + record.Tags + "</div>" +
-        "<div class='coreMod'><a href='#' class='edit'>Edit</a></div>" +
-        "<div class='coreMod'><a href='#' class='delete'>Delete</a></div></div>";
+        "<div class='coreMod'><a href='add.html?id=" + record.Id + "' class='edit'>Edit</a></div>" +
+        "<div class='coreMod'><a href='#' class='delete' onclick='deleteData(" + record.Id + ")'>Delete</a></div></div>";
     })
     $('#dashCore').html(HtmlString);
   }).catch(function(err) {
@@ -277,8 +275,8 @@ function buildArtist() {
         "<div class='coreMod'>" + record.Year + "</div>" +
         "<div class='coreMod'>" + record.Condition + "</div>" +
         "<div class='coreMod'>" + record.Tags + "</div>" +
-        "<div class='coreMod'><a href='#' class='edit'>Edit</a></div>" +
-        "<div class='coreMod'><a href='#' class='delete'>Delete</a></div></div>";
+        "<div class='coreMod'><a href='add.html?id=" + record.Id + "' class='edit'>Edit</a></div>" +
+        "<div class='coreMod'><a href='#' class='delete' onclick='deleteData(" + record.Id + ")'>Delete</a></div></div>";
     })
     $('#dashCore').html(HtmlString);
 
@@ -370,8 +368,8 @@ function buildResults() {
         "<div class='coreMod'>" + record.Year + "</div>" +
         "<div class='coreMod'>" + record.Condition + "</div>" +
         "<div class='coreMod'>" + record.Tags + "</div>" +
-        "<div class='coreMod'><a href='#' class='edit'>Edit</a></div>" +
-        "<div class='coreMod'><a href='#' class='delete'>Delete</a></div></div>";
+        "<div class='coreMod'><a href='add.html?id=" + record.Id + "' class='edit'>Edit</a></div>" +
+        "<div class='coreMod'><a href='#' class='delete' onclick='deleteData(" + record.Id + ")'>Delete</a></div></div>";
     })
     $('#dashCore').html(HtmlString);
   }).catch(function(err) {

@@ -535,7 +535,7 @@ var DropDb = /** @class */ (function () {
                 }
             });
         });
-        // remove from database_list 
+        // remove from database_list
         this.getDbList_(function (result) {
             result.splice(result.indexOf(_this.dbName_), 1);
             _idb_helper__WEBPACK_IMPORTED_MODULE_1__["IdbHelper"].setDbList(result).then(function () {
@@ -1890,7 +1890,7 @@ var CreateDb = /** @class */ (function () {
             };
             tablesMetaData.forEach(function (item, index) {
                 if (item.requireDelete) {
-                    // Delete the old datastore.    
+                    // Delete the old datastore.
                     if (dbConnection.objectStoreNames.contains(item.name)) {
                         dbConnection.deleteObjectStore(item.name);
                     }
@@ -4379,7 +4379,7 @@ var Join = /** @class */ (function (_super) {
     };
     Join.prototype.executeWhereUndefinedLogicForJoin_ = function (joinQuery, query) {
         var _this = this;
-        var joinresults = [], column = query.column, tmpresults = this.results, where = {}, 
+        var joinresults = [], column = query.column, tmpresults = this.results, where = {},
         // Item,
         resultLength = tmpresults.length;
         var joinIndex = 0, itemIndex = 0;
