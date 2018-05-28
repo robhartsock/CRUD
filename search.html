@@ -6,11 +6,9 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
   <link rel="stylesheet" type="text/css" href="style/main.css" />
-  <script src="scripts/jsstore.js "></script>
+  <script src="scripts/jsstore.js"></script>
   <script>
-    var connection = new JsStore.Instance(new Worker('scripts/jsstore.worker.js'));
     window.onload = function() {
-      initiateDb();
       $('#container').on('click', '.edit', function() {
         var RecordId = $(this).parents().eq(1).attr('itemid');
         window.location.href = 'add.html?id=' + RecordId;
@@ -19,106 +17,8 @@
         var RecordId = $(this).parents().eq(1).attr('itemid');
         deleteData(RecordId);
       });
+      buildResults();
     };
-
-    // delete record
-    function deleteData(recordId) {
-      connection.remove({
-        from: 'Record',
-        where: {
-          Id: Number(recordId)
-        }
-      }).then(function(rowsDeleted) {
-        console.log(rowsDeleted + ' rows deleted');
-        if (rowsDeleted > 0) {
-          buildResults();
-        }
-      }).catch(function(err) {
-        console.log(err.message);
-      });
-    }
-
-    function initiateDb() {
-      var DbName = 'Records';
-      connection.isDbExist(DbName).then(function(isExist) {
-        if (isExist) {
-          connection.openDb(DbName).then(function() {
-            console.log('db opened');
-          });
-          buildResults();
-        }
-      }).catch(function(err) {
-        console.log(err);
-      });
-    }
-
-    function getParam(name, url) {
-      if (!url) url = window.location.href;
-      name = name.replace(/[\[\]]/g, '\\$&');
-      var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-          results = regex.exec(url);
-      if (!results) return null;
-      if (!results[2]) return '';
-      return decodeURIComponent(results[2].replace(/\+/g, ' '));
-    }
-
-    function buildResults() {
-      var query = getParam('query');
-      connection.select({
-        from: 'Record',
-        where: {
-          Artist: {
-            like: '%' + query.charAt(0).toUpperCase() + query.slice(1) + '%'
-          },
-          or: {
-            Artist: {
-              like: '%' + query + '%'
-            },
-            Album: {
-              like: '%' + query + '%'
-            },
-            Year: query,
-            Condition: query,
-            Tags: {
-              like: '%' + query + '%'
-            },
-            Album: {
-              like: '%' + query.charAt(0).toUpperCase() + query.slice(1) + '%'
-            },
-            Year: query.charAt(0).toUpperCase() + query.slice(1),
-            Condition: query.charAt(0).toUpperCase() + query.slice(1),
-            Tags: {
-              like: '%' + query.charAt(0).toUpperCase() + query.slice(1) + '%'
-            }
-          }
-        }
-      }).then(function(records) {
-        if (records.length === 0) {
-          window.location.href = 'index.html';
-        }
-        $('#queryName').html(query + ' (' + records.length + ')');
-        var HtmlString = '';
-        records.forEach(function(record) {
-          HtmlString += "<div ItemId=" + record.Id + ">" +
-            "<div class='coreMod'><a href='artist.html?artist=" + encodeURIComponent(record.Artist) + "'>" + record.Artist + "</a></div>" +
-            "<div class='coreMod'>" + record.Album + "</div>" +
-            "<div class='coreMod'>" + record.Year + "</div>" +
-            "<div class='coreMod'>" + record.Condition + "</div>" +
-            "<div class='coreMod'>" + record.Tags + "</div>" +
-            "<div class='coreMod'><a href='#' class='edit'>Edit</a></div>" +
-            "<div class='coreMod'><a href='#' class='delete'>Delete</a></div></div>";
-        })
-        $('#dashCore').html(HtmlString);
-      }).catch(function(err) {
-        console.log(err.message);
-      });
-    }
-
-    // search records
-    function Find() {
-      var searchQry = $('#search').val();
-      window.location.href = 'search.html?query=' + searchQry;
-    }
   </script>
 </head>
 <body>
@@ -152,5 +52,6 @@
   <div id="dashCore"></div>
   <canvas id="bar-chart" width="500" height="300"></canvas>
 </div>
+<script src="scripts/core.js"></script>
 </body>
 </html>
