@@ -219,10 +219,35 @@ function Find() {
   window.location.href = 'search.html?query=' + searchQry;
 }
 
+// sort
+function sort() {
+  connection.select({
+    from: 'Record',
+    order: {
+      by: 'Artist',
+      type: 'asc'
+    }
+  }).then(function (records) {
+    var HtmlString = '';
+    records.forEach(function (record) {
+      HtmlString += "<div ItemId=" + record.Id + ">" +
+        "<div class='coreMod'><a href='artist.html?artist=" + encodeURIComponent(record.Artist) + "'>" + record.Artist + "</a></div>" +
+        "<div class='coreMod'>" + record.Album + "</div>" +
+        "<div class='coreMod'>" + record.Year + "</div>" +
+        "<div class='coreMod'>" + record.Condition + "</div>" +
+        "<div class='coreMod'>" + record.Tags + "</div>" +
+        "<div class='coreMod'><a href='#' class='edit'>Edit</a></div>" +
+        "<div class='coreMod'><a href='#' class='delete'>Delete</a></div></div>";
+    })
+    $('#dashCore').html(HtmlString);
+  }).catch(function(err) {
+    console.log(err.message);
+  });
+}
+
 // build artists
 function buildArtist() {
   var artist = getParam('artist');
-  console.log(artist);
   connection.select({
     from: 'Record',
     where: {

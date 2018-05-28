@@ -12,6 +12,9 @@
       $('#btnAddRecord').click(function() {
         window.location.href = 'add.html';
       });
+      $('#btnSort').click(function() {
+        sort();
+      });
       $('#container').on('click', '.edit', function() {
         var RecordId = $(this).parents().eq(1).attr('itemid');
         window.location.href = 'add.html?id=' + RecordId;
@@ -44,6 +47,9 @@
 <div id="container">
   <button id="btnAddRecord">
     Add Record
+  </button>
+  <button id="btnSort">
+    Sort
   </button>
   <div id="dashHead">
     <div class="headMod">Artist</div>

@@ -114,7 +114,14 @@ button {
   background: #fff;
 }
 
-  #container button {
+  #btnAddRecord {
+    position: absolute;
+    top: 15px;
+    right: 160px;
+    width: 100px;
+    height: 40px;
+  }
+  #btnSort {
     position: absolute;
     top: 15px;
     right: 50px;
