@@ -201,6 +201,18 @@ function updateRecord() {
   });
 }
 
+// add & update submit
+function submit() {
+  if (RecordId) {
+    updateRecord();
+  } else {
+    addRecord();
+  }
+}
+function cancel() {
+  window.location.href = 'index.html';
+}
+
 // search records
 function Find() {
   var searchQry = $('#search').val();
@@ -284,15 +296,14 @@ function buildArtist() {
         }
       }
     });
-  }).catch(function(error) {
-    console.log(error);
+  }).catch(function(err) {
+    console.log(err.message);
   });
 }
 
 // build search results
 function buildResults() {
   var query = getParam('query');
-  console.log('hey');
   connection.select({
     from: 'Record',
     where: {

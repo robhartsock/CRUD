@@ -7,16 +7,14 @@
   <link rel="stylesheet" type="text/css" href="style/main.css" />
   <script src="scripts/jsstore.js"></script>
   <script>
-    function Submit() {
-      if (RecordId) {
-        updateRecord();
-      } else {
-        addRecord();
-      }
-    }
-    function Return() {
-      window.location.href = 'index.html';
-    }
+    window.onload = function() {
+      $('#btnSubmit').click(function() {
+        submit();
+      });
+      $('#btnCancel').click(function() {
+        cancel();
+      });
+    };
   </script>
 </head>
 <body>
@@ -67,10 +65,10 @@
   </form>
 </div>
 <div id="btnContainer">
-  <button id="btnSubmit" type="button" onclick="Submit();">
+  <button id="btnSubmit" type="button">
     <span>Add</span>
   </button>
-  <button id="btnCancel" type="button" onclick="Return();">
+  <button id="btnCancel" type="button">
     <span>Cancel</span>
   </button>
 </div>
