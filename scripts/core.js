@@ -168,9 +168,6 @@ function deleteData(recordId) {
     if (rowsDeleted > 0) {
       showData();
       buildArtist();
-      if(location.pathname === '/.search.html') {
-        buildResults();
-      }
     }
   });
 }
@@ -368,8 +365,8 @@ function buildResults() {
         "<div class='coreMod'>" + record.Year + "</div>" +
         "<div class='coreMod'>" + record.Condition + "</div>" +
         "<div class='coreMod'>" + record.Tags + "</div>" +
-        "<div class='coreMod'><a href='add.html?id=" + record.Id + "' class='edit'>Edit</a></div>" +
-        "<div class='coreMod'><a href='#' class='delete' onclick='deleteData(" + record.Id + ")'>Delete</a></div></div>";
+        "<div class='coreMod'></div>" +
+        "<div class='coreMod'></div>";
     })
     $('#dashCore').html(HtmlString);
   }).catch(function(err) {
