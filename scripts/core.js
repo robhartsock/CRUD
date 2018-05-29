@@ -7,6 +7,9 @@ var RecordId;
 initiateDb();
 getRecord();
 
+// check if artist page
+var artistPage = getParam('artistPage');
+
 // eventListers
 var btnAddRecord = d.getElementById('btnAddRecord');
 if (btnAddRecord) {
@@ -106,7 +109,7 @@ function showData() {
     var HtmlString = '';
     records.forEach(function (record) {
       HtmlString += "<div ItemId=" + record.Id + ">" +
-        "<div class='coreMod'><a href='artist.html?artist=" + encodeURIComponent(record.Artist) + "'>" + record.Artist + "</a></div>" +
+        "<div class='coreMod'><a href='artist.html?artistPage=1&artist=" + encodeURIComponent(record.Artist) + "'>" + record.Artist + "</a></div>" +
         "<div class='coreMod'>" + record.Album + "</div>" +
         "<div class='coreMod'>" + record.Year + "</div>" +
         "<div class='coreMod'>" + record.Condition + "</div>" +
@@ -197,7 +200,9 @@ function deleteData(recordId) {
     console.log(rowsDeleted + ' rows deleted');
     if (rowsDeleted > 0) {
       showData();
-      buildArtist();
+      if(artistPage === '1') {
+        buildArtist();
+      }
     }
   }).catch(function (err) {
     console.log(err.message);
@@ -258,7 +263,7 @@ function sort() {
     var HtmlString = '';
     records.forEach(function (record) {
       HtmlString += "<div ItemId=" + record.Id + ">" +
-        "<div class='coreMod'><a href='artist.html?artist=" + encodeURIComponent(record.Artist) + "'>" + record.Artist + "</a></div>" +
+        "<div class='coreMod'><a href='artist.html?artistPage=1&artist=" + encodeURIComponent(record.Artist) + "'>" + record.Artist + "</a></div>" +
         "<div class='coreMod'>" + record.Album + "</div>" +
         "<div class='coreMod'>" + record.Year + "</div>" +
         "<div class='coreMod'>" + record.Condition + "</div>" +
@@ -299,7 +304,7 @@ function buildArtist() {
     var HtmlString = '';
     records.forEach(function (record) {
       HtmlString += "<div ItemId=" + record.Id + ">" +
-        "<div class='coreMod'><a href='artist.html?artist=" + encodeURIComponent(record.Artist) + "'>" + record.Artist + "</a></div>" +
+        "<div class='coreMod'><a href='artist.html?artistPage=1&artist=" + encodeURIComponent(record.Artist) + "'>" + record.Artist + "</a></div>" +
         "<div class='coreMod'>" + record.Album + "</div>" +
         "<div class='coreMod'>" + record.Year + "</div>" +
         "<div class='coreMod'>" + record.Condition + "</div>" +
@@ -392,7 +397,7 @@ function buildResults() {
     var HtmlString = '';
     records.forEach(function(record) {
       HtmlString += "<div ItemId=" + record.Id + ">" +
-        "<div class='coreMod'><a href='artist.html?artist=" + encodeURIComponent(record.Artist) + "'>" + record.Artist + "</a></div>" +
+        "<div class='coreMod'><a href='artist.html?artistPage=1&artist=" + encodeURIComponent(record.Artist) + "'>" + record.Artist + "</a></div>" +
         "<div class='coreMod'>" + record.Album + "</div>" +
         "<div class='coreMod'>" + record.Year + "</div>" +
         "<div class='coreMod'>" + record.Condition + "</div>" +
