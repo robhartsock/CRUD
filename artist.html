@@ -9,6 +9,14 @@
   <script src="scripts/jsstore.js"></script>
   <script>
     window.onload = function() {
+      $('#container').on('click', '.edit', function() {
+        var RecordId = $(this).parents().eq(1).attr('itemid');
+        window.location.href = 'add.html?id=' + RecordId;
+      });
+      $('#container').on('click', '.delete', function() {
+        var RecordId = $(this).parents().eq(1).attr('itemid');
+        deleteData(RecordId);
+      });
       buildArtist();
     };
   </script>
