@@ -1,4 +1,4 @@
-# Logikcull
+# CRUD
 This is a simple, music album CRUD app that uses JsStore (http://jsstore.net/) as an IndexedDB wrapper for client side storage.
 
 ## Installation
